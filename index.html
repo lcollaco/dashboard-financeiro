@@ -134,33 +134,132 @@ animation:blink 1s infinite;
 
 <body>
 
+/* Senha */
 <script>
 
-const senhaCorreta = "1S329pbr@"
-let senha = null
+const HASH_CORRETO = "93c5ed43cab1370eda8ffe92fb766e6c8790f3fbfec5c1bbe465fecebd128ffb" 
+// senha: 1S329pbr@!
 
-while (senha !== senhaCorreta) {
+const TEMPO_EXPIRACAO = 2 * 60 * 60 * 1000 // 2 horas
 
-senha = prompt("Digite a senha para acessar o Dashboard")
+function sha256(str) {
+return crypto.subtle.digest("SHA-256", new TextEncoder().encode(str))
+.then(buf => {
+return Array.from(new Uint8Array(buf))
+.map(b => b.toString(16).padStart(2, "0"))
+.join("")
+})
+}
 
-if (senha === null) {
+function checkSession(){
+
+const session = localStorage.getItem("auth")
+
+if(!session) return false
+
+const data = JSON.parse(session)
+
+if(Date.now() > data.expira){
+localStorage.removeItem("auth")
+return false
+}
+
+return true
+
+}
+
+function createLogin(){
+
 document.body.innerHTML = `
+
 <div style="
 display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
 background:black;
-color:red;
-font-size:22px;
 font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto;
 ">
-Acesso cancelado
+
+<div style="
+background:#050505;
+border:1px solid #002b15;
+padding:40px;
+border-radius:12px;
+text-align:center;
+width:320px;
+">
+
+<h2 style="color:#00ff88;margin-bottom:20px">
+Dashboard Financeiro
+</h2>
+
+<input 
+type="password"
+id="senha"
+placeholder="Digite a senha"
+style="
+width:100%;
+padding:12px;
+background:black;
+border:1px solid #002b15;
+color:#00ff88;
+border-radius:8px;
+margin-bottom:15px;
+"
+/>
+
+<button onclick="login()" style="
+width:100%;
+padding:12px;
+background:#002b15;
+border:none;
+color:#00ff88;
+border-radius:8px;
+cursor:pointer;
+">
+Entrar
+</button>
+
+<div id="erro" style="
+color:red;
+margin-top:10px;
+font-size:12px;
+"></div>
+
 </div>
+
+</div>
+
 `
-throw new Error("Acesso cancelado")
+
 }
 
+async function login(){
+
+const senha = document.getElementById("senha").value
+
+const hash = await sha256(senha)
+
+if(hash === HASH_CORRETO){
+
+localStorage.setItem("auth", JSON.stringify({
+expira: Date.now() + TEMPO_EXPIRACAO
+}))
+
+location.reload()
+
+}else{
+
+document.getElementById("erro").innerText="Senha incorreta"
+
+}
+
+}
+
+if(!checkSession()){
+createLogin()
+throw new Error("Login necessário")
 }
 
 </script>
