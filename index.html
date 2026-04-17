@@ -134,6 +134,37 @@ animation:blink 1s infinite;
 
 <body>
 
+<script>
+
+const senhaCorreta = "1S329pbr@"
+let senha = null
+
+while (senha !== senhaCorreta) {
+
+senha = prompt("Digite a senha para acessar o Dashboard")
+
+if (senha === null) {
+document.body.innerHTML = `
+<div style="
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+background:black;
+color:red;
+font-size:22px;
+font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto;
+">
+Acesso cancelado
+</div>
+`
+throw new Error("Acesso cancelado")
+}
+
+}
+
+</script>
+  
 <div class="topbar" id="topbar"></div>
 
 <h1>Dashboard Financeiro</h1>
