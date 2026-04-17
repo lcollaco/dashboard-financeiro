@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard Financeiro PRO</title>
+
+<style>
+
+body{
+background:#000;
+color:#00ff88;
+font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto;
+padding:20px;
+margin:0;
+}
+
+/* Barra Bloomberg */
+
+.topbar{
+
+position:fixed;
+top:0;
+left:0;
+right:0;
+background:#010101;
+border-bottom:1px solid #002b15;
+display:flex;
+gap:30px;
+padding:10px 20px;
+z-index:999;
+
+}
+
+.ticker{
+
+font-size:13px;
+
+}
+
+h1{
+margin-top:60px;
+margin-bottom:25px;
+}
+
+.grid{
+
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(500px,1fr));
+gap:25px;
+
+}
+
+.card{
+
+background:#050505;
+border:1px solid #002b15;
+padding:20px;
+border-radius:12px;
+
+display:flex;
+flex-direction:column;
+gap:15px;
+
+cursor:pointer;
+transition:0.2s;
+
+}
+
+.card:hover{
+
+border:1px solid #00ff88;
+box-shadow:0 0 15px rgba(0,255,136,.15);
+
+}
+
+.card.fullscreen{
+
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+z-index:9999;
+background:#000;
+padding:30px;
+
+}
+
+.widget{
+
+height:380px;
+
+}
+
+.fullscreen .widget{
+
+height:90vh;
+
+}
+
+.update{
+
+position:fixed;
+top:45px;
+right:20px;
+font-size:12px;
+opacity:.7;
+
+}
+
+.alert{
+
+animation:blink 1s infinite;
+
+}
+
+@keyframes blink{
+
+0%{border-color:#00ff88}
+50%{border-color:#ff0000}
+100%{border-color:#00ff88}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="topbar" id="topbar"></div>
+
+<h1>Dashboard Financeiro</h1>
+
+<div class="update" id="update">
+Atualizando...
+</div>
+
+<div class="grid" id="grid">
+
+</div>
+
+
+<script src="https://s3.tradingview.com/tv.js"></script>
+
+<script>
+
+const assets=[
+
+{nome:"BBAS3",symbol:"BMFBOVESPA:BBAS3"},
+{nome:"IBOV",symbol:"BMFBOVESPA:IBOV"},
+{nome:"PETR4",symbol:"BMFBOVESPA:PETR4"},
+{nome:"VALE3",symbol:"BMFBOVESPA:VALE3"},
+{nome:"ITUB4",symbol:"BMFBOVESPA:ITUB4"},
+{nome:"BBDC4",symbol:"BMFBOVESPA:BBDC4"},
+
+{nome:"USD → BRL",symbol:"FX_IDC:USDBRL"},
+{nome:"EUR → BRL",symbol:"FX_IDC:EURBRL"},
+{nome:"USD → ARS",symbol:"FX_IDC:USDARS"},
+{nome:"BRL → ARS",symbol:"FX_IDC:BRLARS"}
+
+]
+
+
+function buildCards(){
+
+const grid=document.getElementById("grid")
+
+assets.forEach((a,i)=>{
+
+grid.innerHTML+=`
+
+<div class="card" onclick="fullscreen(this)">
+<h3>${a.nome}</h3>
+<div id="chart${i}" class="widget"></div>
+</div>
+
+`
+
+})
+
+}
+
+
+function create(symbol,container){
+
+document.getElementById(container).innerHTML=""
+
+new TradingView.widget({
+
+autosize:true,
+symbol:symbol,
+interval:"D",
+timezone:"America/Sao_Paulo",
+theme:"dark",
+style:"1",
+locale:"br",
+toolbar_bg:"#000",
+enable_publishing:false,
+hide_top_toolbar:true,
+hide_legend:false,
+container_id:container
+
+})
+
+}
+
+
+function loadCharts(){
+
+assets.forEach((a,i)=>{
+
+create(a.symbol,"chart"+i)
+
+})
+
+document.getElementById("update").innerText=
+"Atualizado: "+new Date().toLocaleTimeString()
+
+}
+
+
+function fullscreen(el){
+
+el.classList.toggle("fullscreen")
+
+}
+
+
+/* Barra superior */
+
+function buildTop(){
+
+const top=document.getElementById("topbar")
+
+assets.slice(0,6).forEach(a=>{
+
+top.innerHTML+=`<div class="ticker">${a.nome}</div>`
+
+})
+
+}
+
+
+/* Auto refresh inteligente */
+
+function autoRefresh(){
+
+let now=new Date()
+
+let hour=now.getHours()
+
+if(hour>=10 && hour<=18){
+
+setInterval(loadCharts,60000)
+
+}else{
+
+setInterval(loadCharts,300000)
+
+}
+
+}
+
+
+/* Alertas */
+
+function checkAlerts(){
+
+document.querySelectorAll(".card").forEach(card=>{
+
+if(Math.random()>0.9){
+
+card.classList.add("alert")
+
+setTimeout(()=>{
+
+card.classList.remove("alert")
+
+},4000)
+
+}
+
+})
+
+}
+
+buildCards()
+buildTop()
+loadCharts()
+autoRefresh()
+
+setInterval(checkAlerts,15000)
+
+</script>
+
+</body>
+
+</html>
