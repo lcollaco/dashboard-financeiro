@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Dashboard Financeiro PRO</title>
+<title>Dashboard Financeiro</title>
 
 <style>
 
@@ -134,18 +134,19 @@ animation:blink 1s infinite;
 
 <body>
 
-/* Senha */
+
 <script>
 
 const HASH_CORRETO = "9dfc93ef5585d25025bc41430056b5bb3f9e80f9e0f13d69ddc8b7d0d292bbea"
+const TEMPO_EXPIRACAO = 2 * 60 * 60 * 1000
 
-const TEMPO_EXPIRACAO = 2 * 60 * 60 * 1000 // 2 horas
+document.documentElement.style.display = "none"
 
-function sha256(str) {
+function sha256(str){
 return crypto.subtle.digest("SHA-256", new TextEncoder().encode(str))
-.then(buf => {
+.then(buf=>{
 return Array.from(new Uint8Array(buf))
-.map(b => b.toString(16).padStart(2, "0"))
+.map(b=>b.toString(16).padStart(2,"0"))
 .join("")
 })
 }
@@ -172,11 +173,16 @@ function createLogin(){
 document.body.innerHTML = `
 
 <div style="
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background:black;
 display:flex;
 justify-content:center;
 align-items:center;
-height:100vh;
-background:black;
+z-index:999999;
 font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto;
 ">
 
@@ -232,17 +238,18 @@ font-size:12px;
 
 `
 
+document.documentElement.style.display = "block"
+
 }
 
 async function login(){
 
 const senha = document.getElementById("senha").value
-
 const hash = await sha256(senha)
 
 if(hash === HASH_CORRETO){
 
-localStorage.setItem("auth", JSON.stringify({
+localStorage.setItem("auth",JSON.stringify({
 expira: Date.now() + TEMPO_EXPIRACAO
 }))
 
@@ -259,6 +266,8 @@ document.getElementById("erro").innerText="Senha incorreta"
 if(!checkSession()){
 createLogin()
 throw new Error("Login necessário")
+}else{
+document.documentElement.style.display = "block"
 }
 
 </script>
