@@ -76,14 +76,14 @@ function variacao(){
     return (Math.random()*4-2).toFixed(2)
 }
 
-//function buildSummary(){
-//    const el=document.getElementById("summary")
-//    if(!el) return
+function buildSummary(){
+    const el=document.getElementById("summary")
+    if(!el) return
 //    el.innerHTML=`
 //    <span>IBOV ${variacao()}%</span>
 //    <span>USD ${(5+Math.random()).toFixed(2)}</span>
 //    <span>BTC ${variacao()}%</span>`
-//}
+}
 
 function buildFilters(){
     const filters=document.getElementById("filters")
