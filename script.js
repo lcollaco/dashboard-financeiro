@@ -99,29 +99,30 @@ function buildFilters(){
 function filter(cat,el){
     document.querySelectorAll(".filter").forEach(f=>f.classList.remove("active"))
     el.classList.add("active")
-    document.querySelectorAll(".card").forEach((card,i)=>{
+    document.querySelectorAll(".card").forEach(card=>{
         if(cat==="Todos"){
             card.style.display="block"
         }else{
-            card.style.display= assets[i].categoria===cat ? "block":"none"
+            card.style.display=card.dataset.cat===cat ? "block":"none"
         }
     })
 }
 
-// FUNÇÃO ATUALIZADA PARA GRID DE 3 COLUNAS
 function buildCards(){
     const grid = document.getElementById("grid")
+    if(!grid) return
     
-    // Configura o Grid via JS
     grid.style.display = "grid"
     grid.style.gridTemplateColumns = "repeat(3, 1fr)"
     grid.style.gap = "20px"
     grid.style.padding = "20px"
 
     let cardsHTML = ""
+
     assets.forEach((a,i)=>{
         cardsHTML += `
-        <div class="card" data-cat="${a.categoria}" onclick="fullscreen(this)" style="min-height:300px; background:#050505; border:1px solid #002b15; border-radius:12px; padding:15px;">
+        <div class="card" data-cat="${a.categoria}" onclick="fullscreen(this)" 
+        style="min-height:300px; background:#050505; border:1px solid #002b15; border-radius:12px; padding:15px;">
             <h3 style="color:#00ff88; margin-top:0">${a.icone} ${a.nome}</h3>
             <div id="chart${i}" class="widget" style="height:250px;"></div>
         </div>`
@@ -131,81 +132,185 @@ function buildCards(){
 }
 
 function create(symbol,container){
-    new TradingView.widget({
-        autosize:true,
-        symbol:symbol,
-        interval:"D",
-        timezone:"America/Sao_Paulo",
-        theme:"dark",
-        style:"1",
-        locale:"br",
-        toolbar_bg:"#000",
-        enable_publishing:false,
-        hide_top_toolbar:true,
-        hide_legend:false,
-        container_id:container
-    })
+if(!window.TradingView) return
+new TradingView.widget({
+autosize:true,
+symbol:symbol,
+interval:"D",
+timezone:"America/Sao_Paulo",
+theme:"dark",
+style:"1",
+locale:"br",
+toolbar_bg:"#000",
+enable_publishing:false,
+hide_top_toolbar:true,
+container_id:container
+})
 }
 
 function loadCharts(){
-    assets.forEach((a,i)=>{
-        create(a.symbol,"chart"+i)
-    })
-    const updateEl = document.getElementById("update")
-    if(updateEl) updateEl.innerText = "Atualizado: " + new Date().toLocaleTimeString()
+assets.forEach((a,i)=>{
+create(a.symbol,"chart"+i)
+})
+
+const updateEl=document.getElementById("update")
+if(updateEl) updateEl.innerText="Atualizado: "+new Date().toLocaleTimeString()
 }
 
 function fullscreen(el){
-    el.classList.toggle("fullscreen")
+document.querySelectorAll(".card").forEach(c=>c.classList.remove("fullscreen"))
+el.classList.add("fullscreen")
 }
 
 function buildTop(){
-    const top=document.getElementById("topbar")
-    if(!top) return
-    top.innerHTML=""
-    assets.forEach(a=>{
-        const v=variacao()
-        const cor=v>=0 ? "#00ff88" : "#ff4444"
-        top.innerHTML+=`<span class="ticker" style="color:${cor}">${a.icone} ${a.nome} ${v}%</span>`
-    })
+const top=document.getElementById("topbar")
+if(!top) return
+
+top.innerHTML=""
+
+assets.forEach(a=>{
+const v=variacao()
+const cor=v>=0?"#00ff88":"#ff4444"
+top.innerHTML+=`<span class="ticker" style="color:${cor}">${a.icone} ${a.nome} ${v}%</span>`
+})
 }
 
 function mercado(){
-    const mkt = document.getElementById("market")
-    if(!mkt) return
-    let hora=new Date().getHours()
-    if(hora>=10 && hora<=18){
-        mkt.innerHTML="🟢 Mercado Aberto"
-    }else{
-        mkt.innerHTML="🔴 Mercado Fechado"
-    }
+const mkt=document.getElementById("market")
+if(!mkt) return
+let hora=new Date().getHours()
+
+if(hora>=10 && hora<=18){
+mkt.innerHTML="🟢 Mercado Aberto"
+}else{
+mkt.innerHTML="🔴 Mercado Fechado"
+}
 }
 
 function autoRefresh(){
-    let hour=new Date().getHours()
-    if(hour>=10 && hour<=18){
-        setInterval(loadCharts,60000)
-    }else{
-        setInterval(loadCharts,300000)
-    }
+let hour=new Date().getHours()
+
+if(hour>=10 && hour<=18){
+setInterval(loadCharts,60000)
+}else{
+setInterval(loadCharts,300000)
+}
 }
 
 function checkAlerts(){
-    document.querySelectorAll(".card").forEach(card=>{
-        if(Math.random()>0.92){
-            card.classList.add("alert")
-            setTimeout(()=>{ card.classList.remove("alert") },4000)
-        }
-    })
+document.querySelectorAll(".card").forEach(card=>{
+if(Math.random()>0.92){
+card.classList.add("alert")
+setTimeout(()=>{ card.classList.remove("alert") },4000)
+}
+})
 }
 
 window.addEventListener("load",()=>{
-    buildCards()
-    setTimeout(()=>{ loadCharts() },300)
-    buildTop()
-    buildSummary()
-    buildFilters()
-    autoRefresh()
-    mercado()
-    setInterval(checkAlerts,15000)
+buildCards()
+setTimeout(()=>{loadCharts()},500)
+buildTop()
+buildSummary()
+buildFilters()
+autoRefresh()
+mercado()
+setInterval(checkAlerts,15000)
+})
+
+/* MODO TV INTELIGENTE */
+
+let tvMode=false
+let tvInterval=null
+let tvIndex=0
+
+function getPriority(){
+
+return assets.map((asset,i)=>{
+
+let prioridade=Math.random()
+
+if(asset.categoria==="Crypto") prioridade+=0.3
+if(asset.categoria==="Ações") prioridade+=0.2
+
+if(document.querySelectorAll(".card")[i]?.classList.contains("alert")){
+prioridade+=1
+}
+
+return{
+index:i,
+prioridade:prioridade
+}
+
+}).sort((a,b)=>b.prioridade-a.prioridade)
+
+}
+
+function getDynamicTime(index){
+
+let card=document.querySelectorAll(".card")[index]
+
+if(!card) return 8000
+
+if(card.classList.contains("alert")) return 15000
+
+return 8000 + Math.random()*4000
+
+}
+
+function toggleTVMode(){
+
+tvMode=!tvMode
+
+if(tvMode){
+document.body.classList.add("tv-mode")
+startSmartTV()
+}else{
+document.body.classList.remove("tv-mode")
+stopSmartTV()
+}
+
+}
+
+function startSmartTV(){
+
+const run=()=>{
+
+const cards=document.querySelectorAll(".card")
+
+if(!cards.length) return
+
+const prioridade=getPriority()
+
+cards.forEach(c=>c.classList.remove("fullscreen"))
+
+const index=prioridade[tvIndex].index
+
+cards[index].classList.add("fullscreen")
+
+const tempo=getDynamicTime(index)
+
+tvIndex++
+
+if(tvIndex>=prioridade.length){
+tvIndex=0
+}
+
+tvInterval=setTimeout(run,tempo)
+
+}
+
+run()
+
+}
+
+function stopSmartTV(){
+clearTimeout(tvInterval)
+document.querySelectorAll(".card")
+.forEach(c=>c.classList.remove("fullscreen"))
+}
+
+document.addEventListener("keydown",(e)=>{
+if(e.key==="t"){
+toggleTVMode()
+}
 })
