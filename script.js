@@ -66,10 +66,10 @@ const assets=[
     {categoria:"Moedas",icone:"💵",nome:"USD → ARS",symbol:"FX_IDC:USDARS"},
     {categoria:"Moedas",icone:"💰",nome:"BRL → ARS",symbol:"FX_IDC:BRLARS"},
     {categoria:"Moedas",icone:"💰",nome:"BRL → CNY",symbol:"FX_IDC:BRLCNY"},
-    {categoria:"Crypto",icone:"₿",nome:"Bitcoin",symbol:"BINANCE:BTCBRL"},
-    {categoria:"Crypto",icone:"◆",nome:"Ethereum",symbol:"BINANCE:ETHBRL"},
-    {categoria:"Crypto",icone:"💰",nome:"BNB",symbol:"BINANCE:BNBBRL"},
-    {categoria:"Crypto",icone:"💰",nome:"XRP",symbol:"BINANCE:XRPBRL"}
+    {categoria:"Crypto",icone:"₿",nome:"Bitcoin → BRL",symbol:"BINANCE:BTCBRL"},
+    {categoria:"Crypto",icone:"◆",nome:"Ethereum → BRL",symbol:"BINANCE:ETHBRL"},
+    {categoria:"Crypto",icone:"💰",nome:"BNB → BRL",symbol:"BINANCE:BNBBRL"},
+    {categoria:"Crypto",icone:"💰",nome:"XRP → BRL",symbol:"BINANCE:XRPBRL"}
 ]
 
 function variacao(){
