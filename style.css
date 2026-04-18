@@ -6,12 +6,18 @@ padding:20px;
 margin:0;
 }
 
+/* HEADER GLASS */
 .header{
 margin-top:60px;
 margin-bottom:10px;
 display:flex;
 justify-content:space-between;
 align-items:center;
+background:rgba(0,0,0,0.5);
+backdrop-filter:blur(10px);
+-webkit-backdrop-filter:blur(10px);
+padding:15px;
+border-radius:12px;
 }
 
 .market{
@@ -19,12 +25,15 @@ font-size:12px;
 opacity:.7;
 }
 
+/* TOPBAR GLASS */
 .topbar{
 position:fixed;
 top:0;
 left:0;
 right:0;
-background:#010101;
+background:rgba(0,0,0,0.7);
+backdrop-filter:blur(8px);
+-webkit-backdrop-filter:blur(8px);
 border-bottom:1px solid #002b15;
 overflow:hidden;
 white-space:nowrap;
@@ -48,6 +57,8 @@ margin-right:40px;
 font-size:13px;
 }
 
+/* SECTIONS */
+
 .section{
 margin-top:20px;
 margin-bottom:10px;
@@ -55,15 +66,21 @@ font-weight:600;
 opacity:.7;
 }
 
+/* GRID */
+
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(420px,1fr));
 gap:20px;
 }
 
+/* CARD GLASS PREMIUM */
+
 .card{
-background:#050505;
-border:1px solid #002b15;
+background:rgba(5,5,5,0.6);
+border:1px solid rgba(0,255,136,0.15);
+backdrop-filter:blur(10px);
+-webkit-backdrop-filter:blur(10px);
 padding:20px;
 border-radius:12px;
 display:flex;
@@ -81,9 +98,16 @@ border:1px solid #00ff88;
 border:1px solid #ff4444;
 }
 
+/* HOVER PREMIUM */
+
 .card:hover{
-box-shadow:0 0 15px rgba(0,255,136,.15);
+transform:translateY(-2px);
+box-shadow:
+0 10px 30px rgba(0,0,0,.6),
+0 0 20px rgba(0,255,136,.15);
 }
+
+/* FULLSCREEN */
 
 .card.fullscreen{
 position:fixed;
@@ -96,6 +120,8 @@ background:#000;
 padding:30px;
 }
 
+/* WIDGET */
+
 .widget{
 height:380px;
 }
@@ -104,6 +130,8 @@ height:380px;
 height:90vh;
 }
 
+/* UPDATE CLOCK */
+
 .update{
 position:fixed;
 top:45px;
@@ -111,6 +139,8 @@ right:20px;
 font-size:12px;
 opacity:.7;
 }
+
+/* ALERT BLINK */
 
 .alert{
 animation:blink 1s infinite;
@@ -122,6 +152,8 @@ animation:blink 1s infinite;
 100%{border-color:#00ff88}
 }
 
+/* SUMMARY */
+
 .summary{
 display:flex;
 gap:20px;
@@ -131,11 +163,14 @@ opacity:.8;
 }
 
 .summary span{
-background:#050505;
+background:rgba(5,5,5,0.6);
+backdrop-filter:blur(10px);
+border:1px solid rgba(0,255,136,0.15);
 padding:6px 12px;
 border-radius:6px;
-border:1px solid #002b15;
 }
+
+/* FILTERS */
 
 .filters{
 margin-bottom:15px;
@@ -145,11 +180,106 @@ gap:10px;
 
 .filter{
 padding:6px 12px;
-border:1px solid #002b15;
+border:1px solid rgba(0,255,136,0.2);
 border-radius:6px;
 cursor:pointer;
+background:rgba(0,0,0,0.5);
+backdrop-filter:blur(6px);
 }
 
 .filter.active{
 background:#002b15;
+}
+
+/* ALERT CARD */
+
+.card.alert{
+border:1px solid #ff3b3b;
+box-shadow:0 0 15px rgba(255,0,0,0.4);
+animation:alertPulse 1.5s infinite;
+}
+
+@keyframes alertPulse{
+0%{transform:scale(1)}
+50%{transform:scale(1.01)}
+100%{transform:scale(1)}
+}
+
+/* ALERT BAR */
+
+.alertBar{
+position:fixed;
+top:0;
+left:0;
+right:0;
+background:#220000;
+color:#ff4444;
+padding:10px;
+text-align:center;
+font-weight:bold;
+display:none;
+z-index:9999;
+border-bottom:1px solid #550000;
+}
+
+/* TV MODE */
+
+.tv-mode .header,
+.tv-mode .filters,
+.tv-mode .summary,
+.tv-mode .update{
+display:none;
+}
+
+.tv-mode .grid{
+margin-top:0;
+}
+
+.tv-mode .card{
+cursor:default;
+}
+
+.tv-mode .card.fullscreen{
+padding:20px;
+}
+
+/* RESPONSIVO PREMIUM */
+
+@media(max-width:1200px){
+.grid{
+grid-template-columns:repeat(2,1fr);
+}
+}
+
+@media(max-width:700px){
+.grid{
+grid-template-columns:1fr;
+}
+
+.summary{
+flex-direction:column;
+}
+
+.filters{
+flex-wrap:wrap;
+}
+}
+
+.card{
+transition:all .4s ease;
+}
+
+.card.fullscreen{
+animation:fadeTV .5s ease;
+}
+
+@keyframes fadeTV{
+from{
+opacity:0;
+transform:scale(.98);
+}
+to{
+opacity:1;
+transform:scale(1);
+}
 }
