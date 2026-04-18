@@ -67,7 +67,8 @@ const assets=[
     {categoria:"Moedas",icone:"💰",nome:"BRL → ARS",symbol:"FX_IDC:BRLARS"},
     {categoria:"Moedas",icone:"💰",nome:"BRL → CNY",symbol:"FX_IDC:BRLCNY"},
     {categoria:"Crypto",icone:"₿",nome:"Bitcoin",symbol:"BINANCE:BTCBRL"},
-    {categoria:"Crypto",icone:"◆",nome:"Ethereum",symbol:"BINANCE:ETHBRL"}
+    {categoria:"Crypto",icone:"◆",nome:"Ethereum",symbol:"BINANCE:ETHBRL"},
+    {categoria:"Crypto",icone:"",nome:"Shiba Inu",symbol:"BINANCE:SHIBBRL"}
 ]
 
 function variacao(){
