@@ -57,10 +57,10 @@ if(!checkSession()){
 const assets=[
     {categoria:"Ações",icone:"📈",nome:"IBOV",symbol:"BMFBOVESPA:IBOV"},
     {categoria:"Ações",icone:"🏦",nome:"BBAS3",symbol:"BMFBOVESPA:BBAS3"},
-    //{categoria:"Ações",icone:"🛢",nome:"PETR4",symbol:"BMFBOVESPA:PETR4"},
-    //{categoria:"Ações",icone:"⛏",nome:"VALE3",symbol:"BMFBOVESPA:VALE3"},
-    //{categoria:"Ações",icone:"🏛",nome:"ITUB4",symbol:"BMFBOVESPA:ITUB4"},
-    //{categoria:"Ações",icone:"🏛",nome:"BBDC4",symbol:"BMFBOVESPA:BBDC4"},
+    {categoria:"Ações",icone:"🛢",nome:"PETR4",symbol:"BMFBOVESPA:PETR4"},
+    {categoria:"Ações",icone:"⛏",nome:"VALE3",symbol:"BMFBOVESPA:VALE3"},
+    {categoria:"Ações",icone:"🏛",nome:"ITUB4",symbol:"BMFBOVESPA:ITUB4"},
+    {categoria:"Ações",icone:"🏛",nome:"BBDC4",symbol:"BMFBOVESPA:BBDC4"},
     {categoria:"Moedas",icone:"💵",nome:"USD → BRL",symbol:"FX_IDC:USDBRL"},
     {categoria:"Moedas",icone:"💶",nome:"EUR → BRL",symbol:"FX_IDC:EURBRL"},
     {categoria:"Moedas",icone:"💵",nome:"USD → ARS",symbol:"FX_IDC:USDARS"},
@@ -68,7 +68,8 @@ const assets=[
     {categoria:"Moedas",icone:"💰",nome:"BRL → CNY",symbol:"FX_IDC:BRLCNY"},
     {categoria:"Crypto",icone:"₿",nome:"Bitcoin",symbol:"BINANCE:BTCBRL"},
     {categoria:"Crypto",icone:"◆",nome:"Ethereum",symbol:"BINANCE:ETHBRL"},
-    {categoria:"Crypto",icone:"💰",nome:"Shiba Inu",symbol:"BINANCE:BRLSHIB"}
+    {categoria:"Crypto",icone:"💰",nome:"Tron",symbol:"BINANCE:TRXBRL"},
+    {categoria:"Crypto",icone:"💰",nome:"Hyperliquid",symbol:"BINANCE:HYPEBRL"}
 ]
 
 function variacao(){
