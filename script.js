@@ -1,4 +1,4 @@
-const HASH_CORRETO = "93c5ed43cab1370eda8ffe92fb766e6c8790f3fbfec5c1bbe465fecebd128ffb"
+const HASH_CORRETO = "a3eaa1668c36ed8fe6ff0130b8338cfb52346d155fe184b57a9184f28b9b13bf"
 const TEMPO_EXPIRACAO = 2 * 60 * 60 * 1000
 
 document.documentElement.style.display = "none"
