@@ -55,7 +55,9 @@ if(!checkSession()){
 }
 
 const assets=[
-    {categoria:"Ações",icone:"📈",nome:"IBOV",symbol:"BMFBOVESPA:IBOV"},
+    {categoria:"Índices",icone:"📈",nome:"IBOV",symbol:"BMFBOVESPA:IBOV"},
+    {categoria:"Índices",icone:"📈",nome:"DJI",symbol:"TVC:DJI"},
+    {categoria:"Índices",icone:"📈",nome:"IXIC",symbol:"NASDAQ:IXIC"},
     {categoria:"Ações",icone:"🏦",nome:"BBAS3",symbol:"BMFBOVESPA:BBAS3"},
     {categoria:"Ações",icone:"🛢",nome:"PETR4",symbol:"BMFBOVESPA:PETR4"},
     {categoria:"Ações",icone:"⛏",nome:"VALE3",symbol:"BMFBOVESPA:VALE3"},
