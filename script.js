@@ -55,9 +55,10 @@ if(!checkSession()){
 }
 
 const assets=[
+    {categoria:"Índices",icone:"📊",nome:"S&P 500",symbol:"CAPITALCOM:US500"},
     {categoria:"Índices",icone:"📈",nome:"IBOV",symbol:"BMFBOVESPA:IBOV"},
-    {categoria:"Índices",icone:"📈",nome:"DJI",symbol:"TVC:DJI"},
-    {categoria:"Índices",icone:"📈",nome:"IXIC",symbol:"NASDAQ:IXIC"},
+    {categoria:"Índices",icone:"🇺🇸",nome:"Dow Jones",symbol:"CAPITALCOM:US30"},
+    {categoria:"Índices",icone:"💻",nome:"Nasdaq 100",symbol:"CAPITALCOM:US100"},
     {categoria:"Ações",icone:"🏦",nome:"BBAS3",symbol:"BMFBOVESPA:BBAS3"},
     {categoria:"Ações",icone:"🛢",nome:"PETR4",symbol:"BMFBOVESPA:PETR4"},
     {categoria:"Ações",icone:"⛏",nome:"VALE3",symbol:"BMFBOVESPA:VALE3"},
