@@ -1,45 +1,28 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-
-<link rel="icon" type="image/jpeg" href="https://thumbs.dreamstime.com/b/global-finance-icon-dollar-euro-yen-simple-vector-featuring-perfect-illustrating-international-business-411441712.jpg?w=768">
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Dashboard Financeiro</title>
-
-<link rel="stylesheet" href="style.css">
-
+    <link rel="icon" type="image/jpeg" href="https://thumbs.dreamstime.com/b/global-finance-icon-dollar-euro-yen-simple-vector-featuring-perfect-illustrating-international-business-411441712.jpg?w=768">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Financeiro</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-
-<div class="topbar">
-<div class="ticker-wrap" id="topbar"></div>
-</div>
-
-<div id="alertBar" class="alertBar"></div>
-
-<div class="header">
-<h1>Dashboard Financeiro</h1>
-<div class="market" id="market"></div>
-</div>
-
-<div class="summary" id="summary"></div>
-
-<div class="filters" id="filters"></div>
-
-<div class="update" id="update">
-Atualizando...
-</div>
-
-<div id="grid"></div>
-
-<script src="https://s3.tradingview.com/tv.js"></script>
-<script src="script.js"></script>
-
+    <div class="topbar">
+        <div class="ticker-wrap" id="topbar"></div>
+    </div>
+    <div id="alertBar" class="alertBar"></div>
+    <div class="header">
+        <h1>Dashboard Financeiro</h1>
+        <div class="status-bar">
+            <div class="market" id="market"></div>
+            <div class="update" id="update">Atualizando...</div>
+        </div>
+    </div>
+    <div class="summary" id="summary"></div>
+    <div class="filters" id="filters"></div>
+    <div id="grid" class="grid"></div>
+    <script src="https://s3.tradingview.com/tv.js"></script>
+    <script src="script.js"></script>
 </body>
-
 </html>
