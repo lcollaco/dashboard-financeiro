@@ -79,10 +79,6 @@ function variacao(){
 function buildSummary(){
     const el=document.getElementById("summary")
     if(!el) return
-//    el.innerHTML=`
-//    <span>IBOV ${variacao()}%</span>
-//    <span>USD ${(5+Math.random()).toFixed(2)}</span>
-//    <span>BTC ${variacao()}%</span>`
 }
 
 function buildFilters(){
@@ -111,206 +107,170 @@ function filter(cat,el){
 function buildCards(){
     const grid = document.getElementById("grid")
     if(!grid) return
-    
-    grid.style.display = "grid"
-    grid.style.gridTemplateColumns = "repeat(3, 1fr)"
-    grid.style.gap = "20px"
-    grid.style.padding = "20px"
-
-    let cardsHTML = ""
-
+    let cardsHTML=""
     assets.forEach((a,i)=>{
-        cardsHTML += `
-        <div class="card" data-cat="${a.categoria}" onclick="fullscreen(this)" 
-        style="min-height:300px; background:#050505; border:1px solid #002b15; border-radius:12px; padding:15px;">
-            <h3 style="color:#00ff88; margin-top:0">${a.icone} ${a.nome}</h3>
-            <div id="chart${i}" class="widget" style="height:250px;"></div>
+        cardsHTML+=`
+        <div class="card" data-cat="${a.categoria}" onclick="fullscreen(this)">
+            <h3 class="tv-title" style="color:#00ff88;margin-top:0">${a.icone} ${a.nome}</h3>
+            <div id="chart${i}" class="widget"></div>
         </div>`
     })
-    
-    grid.innerHTML = cardsHTML
+    grid.innerHTML=cardsHTML
 }
 
 function create(symbol,container){
-if(!window.TradingView) return
-new TradingView.widget({
-autosize:true,
-symbol:symbol,
-interval:"D",
-timezone:"America/Sao_Paulo",
-theme:"dark",
-style:"1",
-locale:"br",
-toolbar_bg:"#000",
-enable_publishing:false,
-hide_top_toolbar:true,
-container_id:container
-})
+    if(!window.TradingView) return
+    new TradingView.widget({
+        autosize:true,
+        symbol:symbol,
+        interval:"D",
+        timezone:"America/Sao_Paulo",
+        theme:"dark",
+        style:"1",
+        locale:"br",
+        toolbar_bg:"#000",
+        enable_publishing:false,
+        hide_top_toolbar:true,
+        container_id:container
+    })
 }
 
 function loadCharts(){
-assets.forEach((a,i)=>{
-create(a.symbol,"chart"+i)
-})
-
-const updateEl=document.getElementById("update")
-if(updateEl) updateEl.innerText="Atualizado: "+new Date().toLocaleTimeString()
+    assets.forEach((a,i)=>{
+        create(a.symbol,"chart"+i)
+    })
+    const updateEl=document.getElementById("update")
+    if(updateEl) updateEl.innerText="Atualizado: "+new Date().toLocaleTimeString()
 }
 
 function fullscreen(el){
-document.querySelectorAll(".card").forEach(c=>c.classList.remove("fullscreen"))
-el.classList.add("fullscreen")
+    document.querySelectorAll(".card").forEach(c=>c.classList.remove("fullscreen"))
+    el.classList.add("fullscreen")
 }
 
 function buildTop(){
-const top=document.getElementById("topbar")
-if(!top) return
-
-top.innerHTML=""
-
-assets.forEach(a=>{
-const v=variacao()
-const cor=v>=0?"#00ff88":"#ff4444"
-top.innerHTML+=`<span class="ticker" style="color:${cor}">${a.icone} ${a.nome} ${v}%</span>`
-})
+    const top=document.getElementById("topbar")
+    if(!top) return
+    top.innerHTML=""
+    assets.forEach(a=>{
+        const v=variacao()
+        const cor=v>=0?"#00ff88":"#ff4444"
+        top.innerHTML+=`<span class="ticker" style="color:${cor}">${a.icone} ${a.nome} ${v}%</span>`
+    })
 }
 
 function mercado(){
-const mkt=document.getElementById("market")
-if(!mkt) return
-let hora=new Date().getHours()
-
-if(hora>=10 && hora<=18){
-mkt.innerHTML="🟢 Mercado Aberto"
-}else{
-mkt.innerHTML="🔴 Mercado Fechado"
-}
+    const mkt=document.getElementById("market")
+    if(!mkt) return
+    let hora=new Date().getHours()
+    if(hora>=10 && hora<=18){
+        mkt.innerHTML="🟢 Mercado Aberto"
+    }else{
+        mkt.innerHTML="🔴 Mercado Fechado"
+    }
 }
 
 function autoRefresh(){
-let hour=new Date().getHours()
-
-if(hour>=10 && hour<=18){
-setInterval(loadCharts,60000)
-}else{
-setInterval(loadCharts,300000)
-}
+    let hour=new Date().getHours()
+    if(hour>=10 && hour<=18){
+        setInterval(loadCharts,60000)
+    }else{
+        setInterval(loadCharts,300000)
+    }
 }
 
 function checkAlerts(){
-document.querySelectorAll(".card").forEach(card=>{
-if(Math.random()>0.92){
-card.classList.add("alert")
-setTimeout(()=>{ card.classList.remove("alert") },4000)
-}
-})
+    document.querySelectorAll(".card").forEach(card=>{
+        if(Math.random()>0.92){
+            card.classList.add("alert")
+            setTimeout(()=>{ card.classList.remove("alert") },4000)
+        }
+    })
 }
 
 window.addEventListener("load",()=>{
-buildCards()
-setTimeout(()=>{loadCharts()},500)
-buildTop()
-buildSummary()
-buildFilters()
-autoRefresh()
-mercado()
-setInterval(checkAlerts,15000)
+    buildCards()
+    setTimeout(()=>{loadCharts()},500)
+    buildTop()
+    buildSummary()
+    buildFilters()
+    autoRefresh()
+    mercado()
+    setInterval(checkAlerts,15000)
 })
 
-/* MODO TV INTELIGENTE */
-
+/* MODO TV */
 let tvMode=false
 let tvInterval=null
 let tvIndex=0
 
 function getPriority(){
-
-return assets.map((asset,i)=>{
-
-let prioridade=Math.random()
-
-if(asset.categoria==="Crypto") prioridade+=0.3
-if(asset.categoria==="Ações") prioridade+=0.2
-
-if(document.querySelectorAll(".card")[i]?.classList.contains("alert")){
-prioridade+=1
-}
-
-return{
-index:i,
-prioridade:prioridade
-}
-
-}).sort((a,b)=>b.prioridade-a.prioridade)
-
+    return assets.map((asset,i)=>{
+        let prioridade=Math.random()
+        if(asset.categoria==="Crypto") prioridade+=0.3
+        if(asset.categoria==="Ações") prioridade+=0.2
+        if(document.querySelectorAll(".card")[i]?.classList.contains("alert")){
+            prioridade+=1
+        }
+        return{ index:i, prioridade:prioridade }
+    }).sort((a,b)=>b.prioridade-a.prioridade)
 }
 
 function getDynamicTime(index){
-
-let card=document.querySelectorAll(".card")[index]
-
-if(!card) return 8000
-
-if(card.classList.contains("alert")) return 15000
-
-return 8000 + Math.random()*4000
-
+    let card=document.querySelectorAll(".card")[index]
+    if(!card) return 4000
+    if(card.classList.contains("alert")) return 15000
+    return 4000 + Math.random()*4000
 }
 
 function toggleTVMode(){
-
-tvMode=!tvMode
-
-if(tvMode){
-document.body.classList.add("tv-mode")
-startSmartTV()
-}else{
-document.body.classList.remove("tv-mode")
-stopSmartTV()
-}
-
+    tvMode=!tvMode
+    if(tvMode){
+        document.body.classList.add("tv-mode")
+        startSmartTV()
+    }else{
+        document.body.classList.remove("tv-mode")
+        stopSmartTV()
+    }
 }
 
 function startSmartTV(){
+    const run=()=>{
+        if(!tvMode) return
+        const cards=document.querySelectorAll(".card")
+        if(!cards.length) return
+        const prioridade=getPriority()
 
-const run=()=>{
+        // Limpa classes de todos os cards
+        cards.forEach(c => {
+            c.classList.remove("fullscreen-tv-top", "fullscreen-tv-bottom");
+        });
 
-const cards=document.querySelectorAll(".card")
+        const index1 = prioridade[tvIndex % prioridade.length].index
+        const index2 = prioridade[(tvIndex+1) % prioridade.length].index
 
-if(!cards.length) return
+        cards[index1].classList.add("fullscreen-tv-top")
+        cards[index2].classList.add("fullscreen-tv-bottom")
 
-const prioridade=getPriority()
-
-cards.forEach(c=>c.classList.remove("fullscreen"))
-
-const index=prioridade[tvIndex].index
-
-cards[index].classList.add("fullscreen")
-
-const tempo=getDynamicTime(index)
-
-tvIndex++
-
-if(tvIndex>=prioridade.length){
-tvIndex=0
-}
-
-tvInterval=setTimeout(run,tempo)
-
-}
-
-run()
-
+        const tempo=getDynamicTime(index1)
+        tvIndex = (tvIndex + 2) % prioridade.length
+        tvInterval=setTimeout(run,tempo)
+    }
+    run()
 }
 
 function stopSmartTV(){
-clearTimeout(tvInterval)
-document.querySelectorAll(".card")
-.forEach(c=>c.classList.remove("fullscreen"))
+    clearTimeout(tvInterval)
+    document.querySelectorAll(".card").forEach(c=>{
+        c.classList.remove("fullscreen-tv-top")
+        c.classList.remove("fullscreen-tv-bottom")
+    })
+    tvIndex=0
 }
 
 document.addEventListener("keydown",(e)=>{
-if(e.key==="t"){
-toggleTVMode()
-}
+    if(document.activeElement.tagName === "INPUT") return
+    if(e.key.toLowerCase() === "t"){
+        toggleTVMode()
+    }
 })
