@@ -144,9 +144,20 @@ function loadCharts(){
 }
 
 function fullscreen(el){
-    document.querySelectorAll(".card").forEach(c=>c.classList.remove("fullscreen"))
-    el.classList.add("fullscreen")
+    // Se o card clicado já for o que está em fullscreen, nós o fechamos
+    if(el.classList.contains("fullscreen")){
+        el.classList.remove("fullscreen");
+    } else {
+        // Primeiro, removemos o fullscreen de qualquer outro card que esteja aberto
+        document.querySelectorAll(".card").forEach(c => c.classList.remove("fullscreen"));
+        // Abrimos o card atual
+        el.classList.add("fullscreen");
+    }
+    
+    // Pequeno truque para o TradingView se ajustar ao novo tamanho instantaneamente
+    window.dispatchEvent(new Event('resize'));
 }
+
 
 function buildTop(){
     const top=document.getElementById("topbar")
